@@ -8,9 +8,9 @@ public class SmartAI : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new [] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "AIModule" });
+		PublicDependencyModuleNames.AddRange(new [] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "AIModule"});
 
-		PrivateDependencyModuleNames.AddRange(new [] { "AI_Module" });
+		PrivateDependencyModuleNames.AddRange(new [] { "AI_Module", "GameplayAbilities", "GameplayTags", "GameplayTasks" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
