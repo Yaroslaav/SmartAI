@@ -12,6 +12,11 @@ class SMARTAI_API ASmartAICharacterWithAbilities : public ACharacter, public IAb
 {
 	GENERATED_BODY()
 
+public:	
+	ASmartAICharacterWithAbilities();
+	
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -25,14 +30,5 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GAS|Attributes|AttributeSet",meta = (AllowPrivateAccess ="true" ))
 	TObjectPtr<const class USmartAIManaSet> ManaAttributeSet;
 
-public:	
-	ASmartAICharacterWithAbilities();
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
