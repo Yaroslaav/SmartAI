@@ -20,13 +20,16 @@ public:
 
 	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Health);
 	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, MaxHealth);
-	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Healing);
 	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Damage);
+	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Healing);
 
-	mutable FSmartAIAttributeEvent OnHealthChanged;
-
+	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes|Health|Events")
+	FSmartAIAttributeEvent OnHealthChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes|Health|Events")
 	mutable FSmartAIAttributeEvent OnMaxHealthChanged;
-
+	
+	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes|Health|Events")
 	mutable FSmartAIAttributeEvent OnOutOfHealth;
 
 protected:
@@ -35,23 +38,31 @@ protected:
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
 
+	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+
+
 private:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "SmartAI|Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData Health;
-	
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "SmartAI|Health", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "SmartAI|Health", Meta = (HideFromModifiers, AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
-
-	bool bOutOfHealth;
-
-	float MaxHealthBeforeAttributeChange;
-	float HealthBeforeAttributeChange;
 
 	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Health", Meta=(AllowPrivateAccess=true))
 	FGameplayAttributeData Healing;
 
 	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Health", Meta=(HideFromModifiers, AllowPrivateAccess=true))
 	FGameplayAttributeData Damage;
+
+
+	bool bOutOfHealth;
+	
+	float HealthBeforeAttributeChange;
+	float MaxHealthBeforeAttributeChange;
 
 };
 

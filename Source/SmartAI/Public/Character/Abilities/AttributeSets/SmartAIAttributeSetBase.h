@@ -18,7 +18,7 @@ struct FGameplayEffectSpec;
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 
-DECLARE_MULTICAST_DELEGATE_SixParams(FSmartAIAttributeEvent, AActor* /*EffectInstigator*/, AActor* /*EffectCauser*/, const FGameplayEffectSpec* /*EffectSpec*/, float /*EffectMagnitude*/, float /*OldValue*/, float /*NewValue*/);/**
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FSmartAIAttributeEvent, AActor*, EffectInstigator, AActor*, EffectCauser, const FGameplayEffectSpec&, EffectSpec, float, EffectMagnitude, float, OldValue, float, NewValue);/**
  * 
  */
 UCLASS()
@@ -28,7 +28,8 @@ class SMARTAI_API USmartAIAttributeSetBase : public UAttributeSet
 
 public:
 	USmartAIAttributeSetBase();
-
+	
+	UFUNCTION()
 	UWorld* GetWorld() const override;
 
 };

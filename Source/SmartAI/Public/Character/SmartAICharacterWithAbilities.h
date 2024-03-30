@@ -4,12 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "Abilities/AttributeSets/SmartAIAttributeSetBase.h"
 #include "GameFramework/Character.h"
-#include "SmartAICharacter_Base.generated.h"
+#include "SmartAICharacterWithAbilities.generated.h"
 
 UCLASS()
-class SMARTAI_API ASmartAICharacter_Base : public ACharacter, public IAbilitySystemInterface
+class SMARTAI_API ASmartAICharacterWithAbilities : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -17,15 +16,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS|Components",meta = (AllowPrivateAccess ="true" ))
 	TObjectPtr<UAbilitySystemComponent>  AbilitySystemComponent;
-	UPROPERTY()
-	TObjectPtr<USmartAIAttributeSetBase> AttributeSet;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GAS|Attributes|AttributeSet",meta = (AllowPrivateAccess ="true" ))
+	TObjectPtr<const class USmartAIHealthSet> HealthAttributeSet;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GAS|Attributes|AttributeSet",meta = (AllowPrivateAccess ="true" ))
+	TObjectPtr<const class USmartAIManaSet> ManaAttributeSet;
 
 public:	
-	ASmartAICharacter_Base();
+	ASmartAICharacterWithAbilities();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	USmartAIAttributeSetBase* GetAttributeSet() const { return AttributeSet; }
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

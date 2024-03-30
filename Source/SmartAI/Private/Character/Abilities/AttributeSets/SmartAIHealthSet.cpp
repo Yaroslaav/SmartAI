@@ -2,7 +2,7 @@
 
 
 #include "Character/Abilities/AttributeSets/SmartAIHealthSet.h"
-
+#include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
 USmartAIHealthSet::USmartAIHealthSet()
@@ -26,11 +26,11 @@ void USmartAIHealthSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 	const float CurrentHealth = GetHealth();
 	const float EstimatedMagnitude = CurrentHealth - OldValue.GetCurrentValue();
 
-	OnHealthChanged.Broadcast(nullptr, nullptr, nullptr, EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
+	OnHealthChanged.Broadcast(nullptr, nullptr, FGameplayEffectSpec(), EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
 
 	if (!bOutOfHealth && CurrentHealth <= 0.0f)
 	{
-		OnOutOfHealth.Broadcast(nullptr, nullptr, nullptr, EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
+		OnOutOfHealth.Broadcast(nullptr, nullptr, FGameplayEffectSpec(), EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
 	}
 
 	bOutOfHealth = (CurrentHealth <= 0.0f);
@@ -39,7 +39,46 @@ void USmartAIHealthSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 void USmartAIHealthSet::OnRep_MaxHealth(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USmartAIHealthSet, MaxHealth, OldValue);
+	
+	OnMaxHealthChanged.Broadcast(nullptr, nullptr, FGameplayEffectSpec(), GetMaxHealth() - OldValue.GetCurrentValue(), OldValue.GetCurrentValue(), GetMaxHealth());
 
-	OnMaxHealthChanged.Broadcast(nullptr, nullptr, nullptr, GetMaxHealth() - OldValue.GetCurrentValue(), OldValue.GetCurrentValue(), GetMaxHealth());
+}
 
+
+
+bool USmartAIHealthSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data)
+{
+	if (!Super::PreGameplayEffectExecute(Data))
+	{
+		return false;
+	}
+	
+	HealthBeforeAttributeChange = GetHealth();
+	MaxHealthBeforeAttributeChange = GetMaxHealth();
+
+	return true;
+}
+
+void USmartAIHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	SetHealth(FMath::Clamp(GetHealth() - GetDamage(), 0, GetMaxHealth()));
+	
+	bOutOfHealth = (GetHealth() <= 0.0f);
+}
+
+void USmartAIHealthSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
+{
+	Super::PreAttributeBaseChange(Attribute, NewValue);
+}
+
+void USmartAIHealthSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+}
+
+void USmartAIHealthSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
 }
