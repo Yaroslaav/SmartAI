@@ -62,14 +62,14 @@ void USmartAIManaSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 void USmartAIManaSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
-	//ClampAttribute(Attribute,NewValue);
+	ClampAttribute(Attribute,NewValue);
 
 }
 
 void USmartAIManaSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	//ClampAttribute(Attribute,NewValue);
+	ClampAttribute(Attribute,NewValue);
 
 }
 
