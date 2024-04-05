@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnvironmentQuery/EnvQueryTest.h"
 #include "EnvQuery_YDistance.generated.h"
+
 /**
  * 
  */

@@ -25,7 +25,8 @@ void UEnvQuery_YDistance::RunTest(FEnvQueryInstance& QueryInstance) const
 	float MinDist = FloatValueMin.GetValue();
 	FloatValueMax.BindData(Owner, QueryInstance.QueryID);
 	float MaxDist = FloatValueMax.GetValue();
-
+	
+	FColor Color = FColor::MakeRandomColor();
 	for (FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
 	{
 		float Score = 1;
@@ -40,10 +41,10 @@ void UEnvQuery_YDistance::RunTest(FEnvQueryInstance& QueryInstance) const
 		
 		if(GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, FCollisionQueryParams(), FCollisionResponseParams()))
 		{
-			UE_LOG(LogEQS, Warning, TEXT("Item Index: %d"), It.GetIndex());
-			UE_LOG(LogEQS, Warning, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName());
+			UE_LOG(LogEQS, Warning, TEXT("IIIItem Index: %d"), It.GetIndex());
+			//UE_LOG(LogEQS, Warning, TEXT("Hit Actor: %s"), *HitResult.GetActor()->GetName());
 		}
-		DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.0f, 0, 5.0f);
+		DrawDebugLine(GetWorld(), Start, End, Color, false, 20.0f, 0, 5.0f);
 
 		
 		UE_LOG(LogEQS, Warning, TEXT("Score: %f"), Score);

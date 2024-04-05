@@ -9,7 +9,7 @@ public class AI_Module : ModuleRules
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
-                "Core",
+                "Core", "AIModule",
             }
         );
 
