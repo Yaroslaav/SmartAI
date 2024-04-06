@@ -1,0 +1,21 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameplayEffectExecutionCalculation.h"
+#include "GEECalculation_CalcDamage.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class SMARTAI_API UGEECalculation_CalcDamage : public UGameplayEffectExecutionCalculation
+{
+	GENERATED_BODY()
+public:
+	UGEECalculation_CalcDamage();
+	float CaclulateDamage(float Damege, float DefencePercent) const;
+	
+	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
+};
