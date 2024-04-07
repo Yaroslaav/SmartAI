@@ -68,3 +68,13 @@ void UEnvQueryTest_TraceWithOffset::RunTest(FEnvQueryInstance& QueryInstance) co
 		It.SetScore(TestPurpose, FilterType, Score, MinDist, MaxDist);
 	}
 }
+
+FText UEnvQueryTest_TraceWithOffset::GetDescriptionTitle() const
+{
+	return Super::GetDescriptionTitle();
+}
+
+FText UEnvQueryTest_TraceWithOffset::GetDescriptionDetails() const
+{
+	return Super::GetDescriptionDetails();
+}

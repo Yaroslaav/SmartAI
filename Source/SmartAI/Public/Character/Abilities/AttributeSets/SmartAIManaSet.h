@@ -21,8 +21,6 @@ public:
 	
 	ATTRIBUTE_ACCESSORS(USmartAIManaSet, Mana);
 	ATTRIBUTE_ACCESSORS(USmartAIManaSet, MaxMana);
-	ATTRIBUTE_ACCESSORS(USmartAIManaSet, StealMana);
-	ATTRIBUTE_ACCESSORS(USmartAIManaSet, RegenMana);
 
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes|Mana|Events")
 	FSmartAIAttributeEvent OnManaChanged;
@@ -49,12 +47,6 @@ private:
 	FGameplayAttributeData Mana;
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "SmartAI|Mana", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxMana;
-
-	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Mana", Meta=(AllowPrivateAccess=true))
-	FGameplayAttributeData RegenMana;
-
-	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Mana", Meta=(HideFromModifiers, AllowPrivateAccess=true))
-	FGameplayAttributeData StealMana;
 
 	float ManaBeforeAttributeChange;
 	float MaxManaBeforeAttributeChange;

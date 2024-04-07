@@ -20,8 +20,6 @@ public:
 
 	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Health);
 	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, MaxHealth);
-	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Damage);
-	ATTRIBUTE_ACCESSORS(USmartAIHealthSet, Healing);
 
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes|Health|Events")
 	FSmartAIAttributeEvent OnHealthChanged;
@@ -51,13 +49,6 @@ private:
 	FGameplayAttributeData Health;
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "SmartAI|Health", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxHealth;
-
-	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Health", Meta=(AllowPrivateAccess=true))
-	FGameplayAttributeData Healing;
-
-	UPROPERTY(BlueprintReadOnly, Category="SmartAI|Health", Meta=(HideFromModifiers, AllowPrivateAccess=true))
-	FGameplayAttributeData Damage;
-
 
 	bool bOutOfHealth;
 	

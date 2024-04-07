@@ -6,6 +6,8 @@
 #include "Character/Abilities/AttributeSets/SmartAIDefenceSet.h"
 #include "Character/Abilities/AttributeSets/SmartAIHealthSet.h"
 
+UE_DEFINE_GAMEPLAY_TAG(TAG_Calculation_Damage, "Calculation.Damage");
+
 struct FDamageStatics
 {
 	FGameplayEffectAttributeCaptureDefinition DefencePercentDef;
@@ -14,19 +16,19 @@ struct FDamageStatics
 		DefencePercentDef = FGameplayEffectAttributeCaptureDefinition(USmartAIDefenceSet::GetDefencePercentAttribute(), EGameplayEffectAttributeCaptureSource::Target, true);
 	}
 };
-static FDamageStatics GetStatic()
+static FDamageStatics GetStatics()
 {
 	static FDamageStatics Statics;
 	return Statics; 
 };
 UGEECalculation_CalcDamage::UGEECalculation_CalcDamage()
 {
-	RelevantAttributesToCapture.Add(GetStatic().DefencePercentDef);
+	RelevantAttributesToCapture.Add(GetStatics().DefencePercentDef);
 }
 
-float UGEECalculation_CalcDamage::CaclulateDamage(float Damege, float DefencePercent) const
+float UGEECalculation_CalcDamage::CaclulateDamage(const float Damage, const float DefencePercent) const
 {
-	return Damege - Damege * DefencePercent; 
+	return Damage - Damage * DefencePercent; 
 }
 
 void UGEECalculation_CalcDamage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
@@ -36,9 +38,10 @@ void UGEECalculation_CalcDamage::Execute_Implementation(const FGameplayEffectCus
 	FAggregatorEvaluateParameters EvaluationParameters;
 	
 	float DefencePercent = 0.0f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetStatic().DefencePercentDef, EvaluationParameters, DefencePercent);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetStatics().DefencePercentDef, EvaluationParameters, DefencePercent);
 
-	float Damage = Spec.GetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Calculation.Damage"), false), false, 0.0f);
+	const float Damage = Spec.GetSetByCallerMagnitude(TAG_Calculation_Damage, false, 0.0f);
 
-	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(USmartAIHealthSet::GetHealthAttribute(), EGameplayModOp::Additive, -CaclulateDamage(Damage, DefencePercent)));
+	const float CalculatedDamage = -CaclulateDamage(Damage, DefencePercent);
+	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(USmartAIHealthSet::GetHealthAttribute(), EGameplayModOp::Additive, CalculatedDamage));
 }

@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectExecutionCalculation.h"
+#include "NativeGameplayTags.h"
 #include "GEECalculation_CalcDamage.generated.h"
 
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Calculation_Damage);
 /**
  * 
  */
@@ -15,7 +17,7 @@ class SMARTAI_API UGEECalculation_CalcDamage : public UGameplayEffectExecutionCa
 	GENERATED_BODY()
 public:
 	UGEECalculation_CalcDamage();
-	float CaclulateDamage(float Damege, float DefencePercent) const;
+	float CaclulateDamage(const float Damage, const float DefencePercent) const;
 	
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 };

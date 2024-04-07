@@ -63,9 +63,6 @@ void USmartAIHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	SetHealth(FMath::Clamp(GetHealth() - GetDamage(), 0, GetMaxHealth()));
-	
-	bOutOfHealth = (GetHealth() <= 0.0f);
 }
 
 void USmartAIHealthSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const

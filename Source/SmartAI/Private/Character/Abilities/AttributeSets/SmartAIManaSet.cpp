@@ -28,7 +28,6 @@ void USmartAIManaSet::OnRep_Mana(const FGameplayAttributeData& OldValue)
 void USmartAIManaSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(USmartAIManaSet, MaxMana, OldValue);
-
 }
 
 bool USmartAIManaSet::PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data)
@@ -55,8 +54,6 @@ void USmartAIManaSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	{
 		OnMaxManaChanged.Broadcast(nullptr, nullptr, FGameplayEffectSpec(), GetMaxMana() - MaxManaBeforeAttributeChange , MaxManaBeforeAttributeChange, GetMaxMana());
 	}
-	//SetMana(FMath::Clamp(GetMana() - Data.EvaluatedData.Magnitude, 0, GetMaxMana()));
-
 }
 
 void USmartAIManaSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
@@ -76,20 +73,11 @@ void USmartAIManaSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 void USmartAIManaSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
-	/*if(Attribute == GetMaxManaAttribute())
-	{
-		if(GetMana() > NewValue)
-		{
-			UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent();
-			check( ASC );
-			ASC->ApplyModToAttribute( GetManaAttribute(), EGameplayModOp::Override, NewValue);
-		}
-	}*/
-
 }
 
 void USmartAIManaSet::ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const
 {
+	
 	if(Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxMana());

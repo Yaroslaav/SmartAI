@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EnvironmentQuery/EnvQueryTest.h"
+#include "EnvironmentQuery/Tests/EnvQueryTest_Distance.h"
 #include "EnvQueryTest_TraceWithOffset.generated.h"
 
 /**
@@ -25,5 +26,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category=Trace)
 	TSubclassOf<UEnvQueryContext> TraceTo;
-
+	
+	virtual FText GetDescriptionTitle() const override;
+	virtual FText GetDescriptionDetails() const override;
 };
