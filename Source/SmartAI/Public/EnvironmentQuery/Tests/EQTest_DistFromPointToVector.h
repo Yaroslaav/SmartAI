@@ -16,8 +16,12 @@ class SMARTAI_API UEQTest_DistFromPointToVector : public UEnvQueryTest
 
 	UPROPERTY(EditDefaultsOnly, Category=Distance)
 	TSubclassOf<UEnvQueryContext> LonePoint;
+	
 	UPROPERTY(EditDefaultsOnly, Category=Distance)
 	TSubclassOf<UEnvQueryContext> VectorStart;
+
+	UPROPERTY(EditDefaultsOnly, Category=Distance)
+	FAIDataProviderFloatValue FloatMinDistance;
 	
 public:
 	UEQTest_DistFromPointToVector();

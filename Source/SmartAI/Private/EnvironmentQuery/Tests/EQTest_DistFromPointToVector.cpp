@@ -30,6 +30,9 @@ void UEQTest_DistFromPointToVector::RunTest(FEnvQueryInstance& QueryInstance) co
 	FloatValueMax.BindData(Owner, QueryInstance.QueryID);
 	float MaxDist = FloatValueMax.GetValue();
 
+	FloatMinDistance.BindData( Owner, QueryInstance.QueryID );
+	float MinDistance = FloatMinDistance.GetValue();
+
 	TArray<FVector> ContextLocations;
 	if (!QueryInstance.PrepareContext(LonePoint, ContextLocations))
 	{
@@ -56,16 +59,8 @@ void UEQTest_DistFromPointToVector::RunTest(FEnvQueryInstance& QueryInstance) co
 		i++;*/
 		if(TestPurpose == EEnvTestPurpose::Score)
 		{
-			switch (FilterType)
-			{
-				case EEnvTestFilterType::Minimum:
-					{
-						Distance -= MinDist;
-						break;
-					}
-			}
+			//Distance -= MinDistance;
 		}
-
 		It.SetScore(TestPurpose, FilterType, Distance, MinDist, MaxDist);
 	}
 }
