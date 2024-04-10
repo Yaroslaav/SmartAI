@@ -47,10 +47,14 @@ void UEQTest_DistFromPointToVector::RunTest(FEnvQueryInstance& QueryInstance) co
 	//int i = 0;
 	for(FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
 	{
+
+		
 		FVector ItemLocation = GetItemLocation(QueryInstance, It.GetIndex());
 		FVector LineDirection = (ItemLocation - VectorStartLocation).GetSafeNormal();
 		FVector ClosestPointOnLine;
 		float Distance = FMath::PointDistToLine(LonePointLocation, LineDirection, VectorStartLocation, ClosestPointOnLine);
+
+
 		/*if(i == 0)
 		{
 			DrawDebugLine(GetWorld(), ClosestPointOnLine, LonePointLocation, FColor::Red, false, 20.0f, 0, 5.0f);

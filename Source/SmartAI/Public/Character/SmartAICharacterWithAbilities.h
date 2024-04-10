@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "Abilities/SmartAIAbilitySystemComponent.h"
 #include "GameFramework/Character.h"
 #include "SmartAICharacterWithAbilities.generated.h"
 
@@ -22,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS|Components",meta = (AllowPrivateAccess ="true" ))
-	TObjectPtr<UAbilitySystemComponent>  AbilitySystemComponent;
+	TObjectPtr<USmartAIAbilitySystemComponent>  AbilitySystemComponent;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GAS|Attributes|AttributeSet",meta = (AllowPrivateAccess ="true" ))
 	TObjectPtr<const class USmartAIHealthSet> HealthAttributeSet;

@@ -11,7 +11,7 @@ ASmartAICharacterWithAbilities::ASmartAICharacterWithAbilities()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent = CreateDefaultSubobject<USmartAIAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
 
 UAbilitySystemComponent* ASmartAICharacterWithAbilities::GetAbilitySystemComponent() const

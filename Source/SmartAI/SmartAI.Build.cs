@@ -10,7 +10,7 @@ public class SmartAI : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new [] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "AIModule", "GameplayAbilities"});
 
-		PrivateDependencyModuleNames.AddRange(new [] { "AI_Module", "GameplayTags", "GameplayTasks" });
+		PrivateDependencyModuleNames.AddRange(new [] { "AI_Module", "GameplayTags", "GameplayTasks", "EnhancedInput" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
