@@ -20,10 +20,31 @@ namespace EnhancedInputAbilitySystem_Impl
 
 USmartAIAbilitySystemComponent::USmartAIAbilitySystemComponent(const FObjectInitializer& ObjectInitializer)
 {
+	
+}
+
+void USmartAIAbilitySystemComponent::LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude)
+{
+
+	if(FGameplayAbilitySpec* AbilitySpec = FindAbilitySpec(AbilityHandle))
+	{
+		AbilitySpec->Level += LevelMagnitude;
+		MarkAbilitySpecDirty(*AbilitySpec);
+		
+		UE_LOG(LogTemp, Warning, TEXT("Spec Level: %d"), AbilitySpec->Level)
+
+		UE_LOG(LogTemp, Warning, TEXT("Ability Level: %d"), AbilitySpec->Ability->GetAbilityLevel())
+		
+		if (!AbilitySpec->Ability->IsInstantiated())
+		{
+			// this is always printed
+			UE_LOG(LogTemp, Error, TEXT("NOT INSTANTIATED"))
+		}
+	}
 }
 
 void USmartAIAbilitySystemComponent::SetInputBinding(UInputAction* InputAction,
-	FGameplayAbilitySpecHandle AbilityHandle)
+                                                     FGameplayAbilitySpecHandle AbilityHandle)
 {
 	using namespace EnhancedInputAbilitySystem_Impl;
 

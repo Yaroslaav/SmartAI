@@ -31,6 +31,9 @@ class SMARTAI_API USmartAIAbilitySystemComponent : public UAbilitySystemComponen
 public:
 	USmartAIAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	void LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude);
+	
 	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
 	void SetInputBinding(UInputAction* InputAction, FGameplayAbilitySpecHandle AbilityHandle);
 
