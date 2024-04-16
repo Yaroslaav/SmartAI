@@ -4,8 +4,6 @@
 #include "Character/Abilities/SmartAIAbilitySystemComponent.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
-#include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
 
 namespace EnhancedInputAbilitySystem_Impl
 {
@@ -25,19 +23,13 @@ USmartAIAbilitySystemComponent::USmartAIAbilitySystemComponent(const FObjectInit
 
 void USmartAIAbilitySystemComponent::LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude)
 {
-
-	if(FGameplayAbilitySpec* AbilitySpec = FindAbilitySpec(AbilityHandle))
+	if(FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilityHandle))
 	{
 		AbilitySpec->Level += LevelMagnitude;
 		MarkAbilitySpecDirty(*AbilitySpec);
 		
-		UE_LOG(LogTemp, Warning, TEXT("Spec Level: %d"), AbilitySpec->Level)
-
-		UE_LOG(LogTemp, Warning, TEXT("Ability Level: %d"), AbilitySpec->Ability->GetAbilityLevel())
-		
 		if (!AbilitySpec->Ability->IsInstantiated())
 		{
-			// this is always printed
 			UE_LOG(LogTemp, Error, TEXT("NOT INSTANTIATED"))
 		}
 	}
@@ -48,12 +40,12 @@ void USmartAIAbilitySystemComponent::SetInputBinding(UInputAction* InputAction,
 {
 	using namespace EnhancedInputAbilitySystem_Impl;
 
-	FGameplayAbilitySpec* BindingAbility = FindAbilitySpec(AbilityHandle);
+	FGameplayAbilitySpec* BindingAbility = FindAbilitySpecFromHandle(AbilityHandle);
 
 	FAbilityInputBinding* AbilityInputBinding = MappedAbilities.Find(InputAction);
 	if (AbilityInputBinding)
 	{
-		FGameplayAbilitySpec* OldBoundAbility = FindAbilitySpec(AbilityInputBinding->BoundAbilitiesStack.Top());
+		FGameplayAbilitySpec* OldBoundAbility = FindAbilitySpecFromHandle(AbilityInputBinding->BoundAbilitiesStack.Top());
 		if (OldBoundAbility && OldBoundAbility->InputID == AbilityInputBinding->InputID)
 		{
 			OldBoundAbility->InputID = InvalidInputID;
@@ -78,7 +70,7 @@ void USmartAIAbilitySystemComponent::ClearInputBinding(FGameplayAbilitySpecHandl
 {
 	using namespace EnhancedInputAbilitySystem_Impl;
 
-	if (FGameplayAbilitySpec* FoundAbility = FindAbilitySpec(AbilityHandle))
+	if (FGameplayAbilitySpec* FoundAbility = FindAbilitySpecFromHandle(AbilityHandle))
 	{
 		// Find the mapping for this ability
 		auto MappedIterator = MappedAbilities.CreateIterator();
@@ -88,7 +80,6 @@ void USmartAIAbilitySystemComponent::ClearInputBinding(FGameplayAbilitySpecHandl
 			{
 				break;
 			}
-
 			++MappedIterator;
 		}
 
@@ -100,7 +91,7 @@ void USmartAIAbilitySystemComponent::ClearInputBinding(FGameplayAbilitySpecHandl
 			{
 				if (AbilityInputBinding.BoundAbilitiesStack.Num() > 0)
 				{
-					FGameplayAbilitySpec* StackedAbility = FindAbilitySpec(AbilityInputBinding.BoundAbilitiesStack.Top());
+					FGameplayAbilitySpec* StackedAbility = FindAbilitySpecFromHandle(AbilityInputBinding.BoundAbilitiesStack.Top());
 					if (StackedAbility && StackedAbility->InputID == 0)
 					{
 						StackedAbility->InputID = AbilityInputBinding.InputID;
@@ -162,7 +153,7 @@ void USmartAIAbilitySystemComponent::RemoveEntry(UInputAction* InputAction)
 		{
 			using namespace EnhancedInputAbilitySystem_Impl;
 
-			FGameplayAbilitySpec* AbilitySpec = FindAbilitySpec(AbilityHandle);
+			FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilityHandle);
 			if (AbilitySpec && AbilitySpec->InputID == Bindings->InputID)
 			{
 				AbilitySpec->InputID = InvalidInputID;
@@ -173,12 +164,7 @@ void USmartAIAbilitySystemComponent::RemoveEntry(UInputAction* InputAction)
 	}
 
 }
-FGameplayAbilitySpec* USmartAIAbilitySystemComponent::FindAbilitySpec(FGameplayAbilitySpecHandle Handle)
-{
-	FGameplayAbilitySpec* FoundAbility = nullptr;
-	FoundAbility = FindAbilitySpecFromHandle(Handle);
-	return FoundAbility;
-}
+
 
 
 void USmartAIAbilitySystemComponent::TryBindAbilityInput(UInputAction* InputAction,

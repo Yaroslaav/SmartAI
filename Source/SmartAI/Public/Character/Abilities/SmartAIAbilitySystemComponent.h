@@ -52,7 +52,6 @@ private:
 
 	void TryBindAbilityInput(UInputAction* InputAction, FAbilityInputBinding& AbilityInputBinding);
 
-	FGameplayAbilitySpec* FindAbilitySpec(FGameplayAbilitySpecHandle Handle);
 
 	virtual void BeginPlay() override;
 

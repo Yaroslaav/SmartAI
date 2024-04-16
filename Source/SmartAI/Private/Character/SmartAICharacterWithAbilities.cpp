@@ -26,5 +26,5 @@ void ASmartAICharacterWithAbilities::BeginPlay()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	HealthAttributeSet = AbilitySystemComponent->GetSet<USmartAIHealthSet>();
 	ManaAttributeSet = AbilitySystemComponent->GetSet<USmartAIManaSet>();
-	UE_LOG( LogTemp, Warning, TEXT("SmartAICharacterWithAbilities BeginPlay: Mana attribute"));
+	//UE_LOG( LogTemp, Warning, TEXT("SmartAICharacterWithAbilities BeginPlay: Mana attribute"));
 }	
