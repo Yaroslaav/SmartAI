@@ -22,6 +22,7 @@ class SMARTAI_API UAsyncTaskEffectStackChanged : public UBlueprintAsyncActionBas
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
 	static UAsyncTaskEffectStackChanged* ListenForGameplayEffectStackChange(UAbilitySystemComponent* AbilitySystemComponent, FGameplayTag EffectGameplayTag);
 
+
 	UFUNCTION(BlueprintCallable)
 	void EndTask();
 
