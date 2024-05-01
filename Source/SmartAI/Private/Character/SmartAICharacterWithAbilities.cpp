@@ -19,6 +19,18 @@ UAbilitySystemComponent* ASmartAICharacterWithAbilities::GetAbilitySystemCompone
 	return AbilitySystemComponent;
 }
 
+void ASmartAICharacterWithAbilities::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	AbilitySystemComponent->RefreshAbilityActorInfo();
+}
+
+void ASmartAICharacterWithAbilities::UnPossessed()
+{
+	Super::UnPossessed();
+	AbilitySystemComponent->RefreshAbilityActorInfo();
+}
+
 void ASmartAICharacterWithAbilities::BeginPlay()
 {
 	Super::BeginPlay();

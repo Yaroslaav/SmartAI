@@ -18,7 +18,7 @@ namespace EnhancedInputAbilitySystem_Impl
 
 USmartAIAbilitySystemComponent::USmartAIAbilitySystemComponent(const FObjectInitializer& ObjectInitializer)
 {
-	
+
 }
 
 void USmartAIAbilitySystemComponent::LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude)
@@ -114,6 +114,15 @@ void USmartAIAbilitySystemComponent::ClearInputBinding(FGameplayAbilitySpecHandl
 void USmartAIAbilitySystemComponent::ClearAbilityBindings(UInputAction* InputAction)
 {
 	RemoveEntry(InputAction);
+}
+
+void USmartAIAbilitySystemComponent::TryCancelAbilitySpec(FGameplayAbilitySpecHandle AbilityToCancel)
+{
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilityToCancel);
+	if (AbilitySpec)
+	{
+		CancelAbilitySpec(*AbilitySpec, AbilitySpec->Ability);
+	}
 }
 
 void USmartAIAbilitySystemComponent::OnAbilityInputPressed(UInputAction* InputAction)

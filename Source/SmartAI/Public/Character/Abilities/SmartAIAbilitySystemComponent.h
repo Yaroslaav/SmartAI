@@ -43,6 +43,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
 	void ClearAbilityBindings(UInputAction* InputAction);
 
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	void TryCancelAbilitySpec(FGameplayAbilitySpecHandle AbilityToCancel);
+
+
 private:
 	void OnAbilityInputPressed(UInputAction* InputAction);
 
