@@ -15,6 +15,11 @@ UAbilitySystemComponent* APlayerControllerWithAbilities::GetAbilitySystemCompone
 	return AbilitySystemComponent;
 }
 
+ASmartAICharacterWithAbilities* APlayerControllerWithAbilities::GetCurrentOwningPlayerCharacter()
+{
+	return CurrentOwningPlayerCharacter;
+}
+
 void APlayerControllerWithAbilities::BeginPlay()
 {
 	Super::BeginPlay();

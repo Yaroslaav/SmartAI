@@ -33,6 +33,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude);
+
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	bool IsAbilityActive(FGameplayAbilitySpecHandle AbilityHandle) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
 	void SetInputBinding(UInputAction* InputAction, FGameplayAbilitySpecHandle AbilityHandle);

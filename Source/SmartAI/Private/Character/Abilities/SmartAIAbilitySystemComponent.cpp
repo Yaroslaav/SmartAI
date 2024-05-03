@@ -35,6 +35,16 @@ void USmartAIAbilitySystemComponent::LevelUpAbility(FGameplayAbilitySpecHandle A
 	}
 }
 
+bool USmartAIAbilitySystemComponent::IsAbilityActive(FGameplayAbilitySpecHandle AbilityHandle) const
+{
+	FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromHandle(AbilityHandle);
+	if(AbilitySpec == nullptr)
+	{
+		return false;
+	}
+	return AbilitySpec->IsActive();
+}
+
 void USmartAIAbilitySystemComponent::SetInputBinding(UInputAction* InputAction,
                                                      FGameplayAbilitySpecHandle AbilityHandle)
 {
