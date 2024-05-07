@@ -8,7 +8,7 @@ public class SmartAI : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new [] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "AIModule", "GameplayAbilities"});
+		PublicDependencyModuleNames.AddRange(new [] {"Core", "CoreUObject", "Engine", "InputCore", "AIModule", "AIModule", "GameplayAbilities", "GameplayMessageRuntime" });
 
 		PrivateDependencyModuleNames.AddRange(new [] { "AI_Module", "GameplayTags", "GameplayTasks", "EnhancedInput" });
 
