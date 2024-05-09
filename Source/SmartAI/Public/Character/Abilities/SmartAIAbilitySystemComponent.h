@@ -30,7 +30,7 @@ class SMARTAI_API USmartAIAbilitySystemComponent : public UAbilitySystemComponen
 
 public:
 	USmartAIAbilitySystemComponent(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-
+	
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void LevelUpAbility(FGameplayAbilitySpecHandle AbilityHandle, int32 LevelMagnitude);
 
@@ -48,6 +48,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	void TryCancelAbilitySpec(FGameplayAbilitySpecHandle AbilityToCancel);
+	
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	void CancelAllAbilitiesWithTags(FGameplayTagContainer Tags);
 
 
 private:
