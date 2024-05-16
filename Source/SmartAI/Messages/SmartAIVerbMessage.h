@@ -34,6 +34,8 @@ struct FSmartAIVerbMessage
 	UPROPERTY(BlueprintReadWrite, Category=Gameplay)
 	double Magnitude = 1.0;
 
+	UPROPERTY()
+
 	// Returns a debug string representation of this message
 	SMARTAI_API FString ToString() const;
 };
