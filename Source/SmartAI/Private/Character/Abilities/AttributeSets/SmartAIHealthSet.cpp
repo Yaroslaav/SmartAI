@@ -26,6 +26,7 @@ void USmartAIHealthSet::OnRep_Health(const FGameplayAttributeData& OldValue)
 	const float CurrentHealth = GetHealth();
 	const float EstimatedMagnitude = CurrentHealth - OldValue.GetCurrentValue();
 
+	UE_LOG(LogTemp, Warning, TEXT("OnRep_Health - %s"), *GetClass()->GetName());
 	OnHealthChanged.Broadcast(nullptr, nullptr, FGameplayEffectSpec(), EstimatedMagnitude, OldValue.GetCurrentValue(), CurrentHealth);
 
 	if (!bOutOfHealth && CurrentHealth <= 0.0f)
