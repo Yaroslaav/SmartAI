@@ -29,6 +29,11 @@ class SMARTAI_API USmartAIAttributeSetBase : public UAttributeSet
 public:
 	USmartAIAttributeSetBase();
 	
+	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+
+	virtual void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;
+
 	UFUNCTION()
 	UWorld* GetWorld() const override;
 

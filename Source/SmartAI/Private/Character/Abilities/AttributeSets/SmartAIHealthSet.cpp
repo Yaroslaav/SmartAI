@@ -69,14 +69,29 @@ void USmartAIHealthSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 void USmartAIHealthSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
 	Super::PreAttributeBaseChange(Attribute, NewValue);
+	ClampAttribute(Attribute,NewValue);
 }
 
 void USmartAIHealthSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
+	ClampAttribute(Attribute,NewValue);
 }
 
 void USmartAIHealthSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+}
+
+
+void USmartAIHealthSet::ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const
+{
+	
+	if(Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
+	}else if(Attribute == GetMaxHealthAttribute())
+	{
+		NewValue = FMath::Max(NewValue,1.0f);
+	}
 }

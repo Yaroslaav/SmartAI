@@ -43,6 +43,8 @@ protected:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 
+	void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;
+
 
 private:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "SmartAI|Health", Meta = (AllowPrivateAccess = true))

@@ -28,24 +28,12 @@ public:
 	FSmartAIAttributeEvent OnMaxManaChanged;
 
 protected:
-	UFUNCTION()
-	void OnRep_Mana(const FGameplayAttributeData& OldValue);
-	UFUNCTION()
-	void OnRep_MaxMana(const FGameplayAttributeData& OldValue);
-	
-	virtual bool PreGameplayEffectExecute(FGameplayEffectModCallbackData& Data) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-
-	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
-
-	void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const;
+	virtual void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const override;
 
 private:
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "SmartAI|Mana", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, Category = "SmartAI|Mana", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData Mana;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "SmartAI|Mana", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(BlueprintReadOnly, Category = "SmartAI|Mana", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData MaxMana;
 
 	float ManaBeforeAttributeChange;
