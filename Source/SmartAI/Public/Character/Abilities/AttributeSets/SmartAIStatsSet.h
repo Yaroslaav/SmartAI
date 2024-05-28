@@ -22,6 +22,8 @@ public:
 	ATTRIBUTE_ACCESSORS(USmartAIStatsSet, CooldownRate);
 	ATTRIBUTE_ACCESSORS(USmartAIStatsSet, DamageBonus);
 	ATTRIBUTE_ACCESSORS(USmartAIStatsSet, ReflectDamagePercent);
+	ATTRIBUTE_ACCESSORS(USmartAIStatsSet, Speed);
+	
 
 	
 	virtual void ClampAttribute(const FGameplayAttribute& Attribute, float& NewValue) const override;
@@ -35,4 +37,6 @@ private:
 	FGameplayAttributeData DamageBonus;
 	UPROPERTY(BlueprintReadOnly, Category = "SmartAI|Stats", Meta = (AllowPrivateAccess = true))
 	FGameplayAttributeData ReflectDamagePercent;
+	UPROPERTY(BlueprintReadOnly, Category = "SmartAI|Stats", Meta = (AllowPrivateAccess = true))
+	FGameplayAttributeData Speed;
 };
