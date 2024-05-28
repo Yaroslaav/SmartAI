@@ -74,7 +74,44 @@ void USmartAIAbilitySystemComponent::SetInputBinding(UInputAction* InputAction,
 	}
 
 	AbilityInputBinding->BoundAbilitiesStack.Push(AbilityHandle);
-	TryBindAbilityInput(InputAction, *AbilityInputBinding);
+	TryBindAbilityInput(InputAction, *AbilityInputBinding, OwnerInputComponent);
+}
+
+void USmartAIAbilitySystemComponent::SetInputBindingToPlayerController(UInputAction* InputAction,
+	FGameplayAbilitySpecHandle AbilityHandle)
+{
+	using namespace EnhancedInputAbilitySystem_Impl;
+
+	if(GetOwner() == nullptr)
+	{
+		return;
+		
+	}
+	FGameplayAbilitySpec* BindingAbility = FindAbilitySpecFromHandle(AbilityHandle);
+
+	FAbilityInputBinding* AbilityInputBinding = MappedAbilities.Find(InputAction);
+	if (AbilityInputBinding)
+	{
+		FGameplayAbilitySpec* OldBoundAbility = FindAbilitySpecFromHandle(AbilityInputBinding->BoundAbilitiesStack.Top());
+		if (OldBoundAbility && OldBoundAbility->InputID == AbilityInputBinding->InputID)
+		{
+			OldBoundAbility->InputID = InvalidInputID;
+		}
+	}
+	else
+	{
+		AbilityInputBinding = &MappedAbilities.Add(InputAction);
+		AbilityInputBinding->InputID = GetNextInputID();
+	}
+
+	if (BindingAbility)
+	{
+		BindingAbility->InputID = AbilityInputBinding->InputID;
+	}
+
+	AbilityInputBinding->BoundAbilitiesStack.Push(AbilityHandle);
+	TryBindAbilityInput(InputAction, *AbilityInputBinding, PlayerControllerInputComponent);
+
 }
 
 void USmartAIAbilitySystemComponent::ClearInputBinding(FGameplayAbilitySpecHandle AbilityHandle)
@@ -169,10 +206,10 @@ void USmartAIAbilitySystemComponent::RemoveEntry(UInputAction* InputAction)
 	
 	if (FAbilityInputBinding* Bindings = MappedAbilities.Find(InputAction))
 	{
-		if (InputComponent)
+		if (OwnerInputComponent)
 		{
-			InputComponent->RemoveBindingByHandle(Bindings->OnPressedHandle);
-			InputComponent->RemoveBindingByHandle(Bindings->OnReleasedHandle);
+			OwnerInputComponent->RemoveBindingByHandle(Bindings->OnPressedHandle);
+			OwnerInputComponent->RemoveBindingByHandle(Bindings->OnReleasedHandle);
 		}
 
 		for (FGameplayAbilitySpecHandle AbilityHandle : Bindings->BoundAbilitiesStack)
@@ -193,8 +230,7 @@ void USmartAIAbilitySystemComponent::RemoveEntry(UInputAction* InputAction)
 
 
 
-void USmartAIAbilitySystemComponent::TryBindAbilityInput(UInputAction* InputAction,
-	FAbilityInputBinding& AbilityInputBinding)
+void USmartAIAbilitySystemComponent::TryBindAbilityInput(UInputAction* InputAction, FAbilityInputBinding& AbilityInputBinding, UEnhancedInputComponent* InputComponent)
 {
 	
 	if (InputComponent)
@@ -214,12 +250,19 @@ void USmartAIAbilitySystemComponent::TryBindAbilityInput(UInputAction* InputActi
 
 }
 
-
 void USmartAIAbilitySystemComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	AActor* Owner = GetOwner();
-	if (IsValid(Owner) && Owner->InputComponent) {
-		InputComponent = CastChecked<UEnhancedInputComponent>(Owner->InputComponent);
+	if (IsValid(Owner)) 
+	{
+		if(Owner->InputComponent)
+		{
+			OwnerInputComponent = CastChecked<UEnhancedInputComponent>(Owner->InputComponent);
+		}
+		if(GetWorld()->GetFirstPlayerController()->InputComponent)
+		{
+			PlayerControllerInputComponent = CastChecked<UEnhancedInputComponent>(GetWorld()->GetFirstPlayerController()->InputComponent);
+		}
 	}
 }

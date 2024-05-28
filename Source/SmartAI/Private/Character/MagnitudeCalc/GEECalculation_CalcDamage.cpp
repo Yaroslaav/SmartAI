@@ -13,10 +13,12 @@ struct FDamageStatics
 {
 	FGameplayEffectAttributeCaptureDefinition DefencePercentDef;
 	FGameplayEffectAttributeCaptureDefinition DamageBonusDef;
+	FGameplayEffectAttributeCaptureDefinition ReflectDamagePercentDef;
 	FDamageStatics()
 	{
 		DefencePercentDef = FGameplayEffectAttributeCaptureDefinition(USmartAIDefenceSet::GetDefencePercentAttribute(), EGameplayEffectAttributeCaptureSource::Target, true);
 		DamageBonusDef = FGameplayEffectAttributeCaptureDefinition(USmartAIStatsSet::GetDamageBonusAttribute(), EGameplayEffectAttributeCaptureSource::Source, true);
+		ReflectDamagePercentDef = FGameplayEffectAttributeCaptureDefinition(USmartAIStatsSet::GetReflectDamagePercentAttribute(), EGameplayEffectAttributeCaptureSource::Target, true);
 	}
 };
 static FDamageStatics GetStatics()
@@ -28,15 +30,16 @@ UGEECalculation_CalcDamage::UGEECalculation_CalcDamage()
 {
 	RelevantAttributesToCapture.Add(GetStatics().DefencePercentDef);
 	RelevantAttributesToCapture.Add(GetStatics().DamageBonusDef);
+	RelevantAttributesToCapture.Add(GetStatics().ReflectDamagePercentDef);
 }
 
-float UGEECalculation_CalcDamage::CalculateDamage(float Damage, const float DefencePercent, const float DamageBonus) const
+float UGEECalculation_CalcDamage::CalculateDamage(float Damage, const float DefencePercent, const float DamageBonus, const float ReflectDamagePercent) const
 {
-	if(DamageBonus > 0.0f)
-	{
-		Damage *= DamageBonus;
-	}
-	
+	//UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), Damage);
+	Damage += Damage * DamageBonus;
+	Damage -= Damage * ReflectDamagePercent;
+	//UE_LOG(LogTemp, Warning, TEXT("Damage reflect: %f"), Damage * ReflectDamagePercent);
+
 	return Damage - Damage * DefencePercent; 
 }
 
@@ -52,8 +55,13 @@ void UGEECalculation_CalcDamage::Execute_Implementation(const FGameplayEffectCus
 	float DamageBonus = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetStatics().DamageBonusDef, EvaluationParameters, DamageBonus);
 
+	float ReflectDamagePercent = 0.0f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetStatics().ReflectDamagePercentDef, EvaluationParameters, ReflectDamagePercent);
+
 	const float Damage = Spec.GetSetByCallerMagnitude(TAG_Calculation_Damage, false, 0.0f);
 
-	const float CalculatedDamage = -CalculateDamage(Damage, DefencePercent, DamageBonus);
+	const float CalculatedDamage = -CalculateDamage(Damage, DefencePercent, DamageBonus, ReflectDamagePercent);
+
+	//UE_LOG(LogTemp, Warning, TEXT("Calc Damage: %f"), CalculatedDamage);
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(USmartAIHealthSet::GetHealthAttribute(), EGameplayModOp::Additive, CalculatedDamage));
 }

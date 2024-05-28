@@ -39,6 +39,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
 	void SetInputBinding(UInputAction* InputAction, FGameplayAbilitySpecHandle AbilityHandle);
+	
+	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
+	void SetInputBindingToPlayerController(UInputAction* InputAction, FGameplayAbilitySpecHandle AbilityHandle);
 
 	UFUNCTION(BlueprintCallable, Category = "Enhanced Input Abilities")
 	void ClearInputBinding(FGameplayAbilitySpecHandle AbilityHandle);
@@ -60,7 +63,8 @@ private:
 
 	void RemoveEntry(UInputAction* InputAction);
 
-	void TryBindAbilityInput(UInputAction* InputAction, FAbilityInputBinding& AbilityInputBinding);
+	void TryBindAbilityInput(UInputAction* InputAction, FAbilityInputBinding& AbilityInputBinding, UEnhancedInputComponent* InputComponent);
+	
 
 
 	virtual void BeginPlay() override;
@@ -69,5 +73,8 @@ private:
 	TMap<UInputAction*, FAbilityInputBinding> MappedAbilities;
 
 	UPROPERTY(transient)
-	UEnhancedInputComponent* InputComponent;
+	UEnhancedInputComponent* OwnerInputComponent;
+	
+	UPROPERTY(transient)
+	UEnhancedInputComponent* PlayerControllerInputComponent;
 };

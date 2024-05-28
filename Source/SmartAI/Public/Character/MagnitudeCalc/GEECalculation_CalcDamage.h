@@ -17,7 +17,7 @@ class SMARTAI_API UGEECalculation_CalcDamage : public UGameplayEffectExecutionCa
 	GENERATED_BODY()
 public:
 	UGEECalculation_CalcDamage();
-	float CalculateDamage(float Damage, const float DefencePercent, const float DamageBonus) const;
+	float CalculateDamage(float Damage, const float DefencePercent, const float DamageBonus, const float ReflectDamagePercent) const;
 	
 	virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
 };
