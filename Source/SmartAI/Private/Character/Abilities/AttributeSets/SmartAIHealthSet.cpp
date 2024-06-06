@@ -90,6 +90,7 @@ void USmartAIHealthSet::ClampAttribute(const FGameplayAttribute& Attribute, floa
 	if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.0f, GetMaxHealth());
+		UE_LOG( LogTemp, Warning, TEXT("NewHealth - %f"), NewValue);
 	}else if(Attribute == GetMaxHealthAttribute())
 	{
 		NewValue = FMath::Max(NewValue,1.0f);

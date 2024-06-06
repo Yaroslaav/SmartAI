@@ -62,6 +62,6 @@ void UGEECalculation_CalcDamage::Execute_Implementation(const FGameplayEffectCus
 
 	const float CalculatedDamage = -CalculateDamage(Damage, DefencePercent, DamageBonus, ReflectDamagePercent);
 
-	//UE_LOG(LogTemp, Warning, TEXT("Calc Damage: %f"), CalculatedDamage);
+	UE_LOG(LogTemp, Warning, TEXT("Calc Damage: %f"), CalculatedDamage);
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(USmartAIHealthSet::GetHealthAttribute(), EGameplayModOp::Additive, CalculatedDamage));
 }
