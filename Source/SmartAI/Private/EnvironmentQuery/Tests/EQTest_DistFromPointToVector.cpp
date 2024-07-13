@@ -5,11 +5,10 @@
 
 #include "EnvironmentQuery/Contexts/EnvQueryContext_Querier.h"
 #include "EnvironmentQuery/Items/EnvQueryItemType_VectorBase.h"
-
 UEQTest_DistFromPointToVector::UEQTest_DistFromPointToVector()
 {
-	LonePoint = UEnvQueryContext_Querier::StaticClass();
-	VectorStart = UEnvQueryContext_Querier::StaticClass();
+	Point1 = UEnvQueryContext_Querier::StaticClass();
+	Point2 = UEnvQueryContext_Querier::StaticClass();
 	ValidItemType = UEnvQueryItemType_VectorBase::StaticClass();
 
 }
@@ -33,34 +32,35 @@ void UEQTest_DistFromPointToVector::RunTest(FEnvQueryInstance& QueryInstance) co
 	FloatMinDistance.BindData( Owner, QueryInstance.QueryID );
 	float MinDistance = FloatMinDistance.GetValue();
 
+	if(PointsRole.Num() != 3)
+	{
+		return;
+	}
 	TArray<FVector> ContextLocations;
-	if (!QueryInstance.PrepareContext(LonePoint, ContextLocations))
+	if (!QueryInstance.PrepareContext(Point1, ContextLocations))
 	{
 		return;
 	}
-	FVector LonePointLocation = ContextLocations[0];
-	if (!QueryInstance.PrepareContext(VectorStart, ContextLocations))
+	if (!QueryInstance.PrepareContext(Point2, ContextLocations))
 	{
 		return;
 	}
-	FVector VectorStartLocation = ContextLocations[1];
-	//int i = 0;
+
 	for(FEnvQueryInstance::ItemIterator It(this, QueryInstance); It; ++It)
 	{
+		FVector LonePointLocation = PointsRole[LonePoint] > -1 ? ContextLocations[PointsRole[LonePoint]] : GetItemLocation(QueryInstance, It.GetIndex());
+		FVector VectorStartLocation = PointsRole[VectorStart] > -1 ? ContextLocations[PointsRole[VectorStart]] : GetItemLocation(QueryInstance, It.GetIndex());
+		FVector VectorEndLocation = PointsRole[VectorEnd] > -1 ? ContextLocations[PointsRole[VectorEnd]] : GetItemLocation(QueryInstance, It.GetIndex());
 
-		
-		FVector ItemLocation = GetItemLocation(QueryInstance, It.GetIndex());
-		FVector LineDirection = (ItemLocation - VectorStartLocation).GetSafeNormal();
+		FVector LineDirection = (VectorEndLocation - VectorStartLocation).GetSafeNormal();
 		FVector ClosestPointOnLine;
 		float Distance = FMath::PointDistToLine(LonePointLocation, LineDirection, VectorStartLocation, ClosestPointOnLine);
 
 
-		/*if(i == 0)
-		{
-			DrawDebugLine(GetWorld(), ClosestPointOnLine, LonePointLocation, FColor::Red, false, 20.0f, 0, 5.0f);
-			DrawDebugLine(GetWorld(), VectorStartLocation, ItemLocation, FColor::Orange, false, 20.0f, 0, 5.0f);
-		}
-		i++;*/
+
+		DrawDebugLine(GetWorld(), ClosestPointOnLine, LonePointLocation, FColor::Red, false, 20.0f, 0, 5.0f);
+		DrawDebugLine(GetWorld(), VectorStartLocation, VectorEndLocation, FColor::Orange, false, 20.0f, 0, 5.0f);
+
 		if(TestPurpose == EEnvTestPurpose::Score)
 		{
 			//Distance -= MinDistance;

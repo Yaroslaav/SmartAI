@@ -4,6 +4,7 @@
 #include "Character/Abilities/SmartAIAbilitySystemComponent.h"
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "Character/Abilities/SmartAIGameplayAbility.h"
 
 namespace EnhancedInputAbilitySystem_Impl
 {
@@ -19,6 +20,11 @@ namespace EnhancedInputAbilitySystem_Impl
 USmartAIAbilitySystemComponent::USmartAIAbilitySystemComponent(const FObjectInitializer& ObjectInitializer)
 {
 	
+}
+
+FGameplayAbilitySpecContainer USmartAIAbilitySystemComponent::GetActivatableAbilities() const
+{
+	return ActivatableAbilities;
 }
 
 
@@ -176,6 +182,34 @@ void USmartAIAbilitySystemComponent::TryCancelAbilitySpec(FGameplayAbilitySpecHa
 void USmartAIAbilitySystemComponent::CancelAllAbilitiesWithTags(FGameplayTagContainer Tags)
 {
 	ApplyAbilityBlockAndCancelTags( FGameplayTagContainer(), nullptr, false, FGameplayTagContainer(), false, Tags );
+}
+
+bool USmartAIAbilitySystemComponent::ActivateAbilityWithEventData(TSubclassOf<UGameplayAbility> AbilityToActivate,
+                                                                  FGameplayEventData EventData)
+{
+	FGameplayAbilitySpec AbilitySpec = nullptr;
+	const UGameplayAbility* const InAbilityCDO = AbilityToActivate.GetDefaultObject();
+
+	
+	for (FGameplayAbilitySpec& Spec : ActivatableAbilities.Items)
+	{
+		if (Spec.Ability == InAbilityCDO)
+		{
+			AbilitySpec = Spec;
+			break;
+		}
+	}
+	if(!AbilitySpec.Ability)
+	{
+		return false;
+	}
+	const USmartAIGameplayAbility* SmartAIAbility = Cast<USmartAIGameplayAbility>(AbilitySpec.Ability);
+	if( !SmartAIAbility )
+	{
+		return false;
+	}
+	FScopedPredictionWindow NewScopedWindow(this, true);
+	return HandleGameplayEvent(SmartAIAbility->GetAbilityTriggers()[0].TriggerTag, &EventData) > 0;
 }
 
 

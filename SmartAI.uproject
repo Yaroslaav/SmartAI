@@ -12,7 +12,8 @@
 				"AIModule",
 				"Engine",
 				"GameplayAbilities",
-				"CoreUObject"
+				"CoreUObject",
+				"NavigationSystem"
 			]
 		},
 		{

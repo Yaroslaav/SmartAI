@@ -19,7 +19,9 @@ class SMARTAI_API UAsyncTaskAbilityWithTagsEnded : public UBlueprintAsyncActionB
 	FAsyncTaskGameplayAbilityWithTagsEndedEv OnEnded;
 
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
-	static UAsyncTaskAbilityWithTagsEnded* ListenForGameplayAbilityEnd(UAbilitySystemComponent* abilitySystemComponent, FGameplayTagContainer abilityTags);
+	static UAsyncTaskAbilityWithTagsEnded* ListenForGameplayAbilityEnd(UAbilitySystemComponent* abilitySystemComponent, TSubclassOf<UGameplayAbility> AbilityClass);
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
+	static UAsyncTaskAbilityWithTagsEnded* ListenForGameplayAbilityEndByTags(UAbilitySystemComponent* abilitySystemComponent, FGameplayTagContainer WithTags);
 
 	UFUNCTION(BlueprintCallable)
 	void EndTask();

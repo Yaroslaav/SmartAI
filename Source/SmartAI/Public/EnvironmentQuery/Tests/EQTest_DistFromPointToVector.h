@@ -9,16 +9,26 @@
 /**
  * 
  */
+UENUM(Blueprintable)
+enum EPointRole
+{
+	LonePoint,
+	VectorStart,
+	VectorEnd,
+};
 UCLASS()
 class SMARTAI_API UEQTest_DistFromPointToVector : public UEnvQueryTest
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category=Distance)
-	TSubclassOf<UEnvQueryContext> LonePoint;
+	/** -1 - item point, 0 - point1, 1 - point2 */
+	UPROPERTY(EditDefaultsOnly, Category=Distance, meta = (DisplayName = "Point Role"))
+	TMap<TEnumAsByte<EPointRole>, int32> PointsRole;
 	
 	UPROPERTY(EditDefaultsOnly, Category=Distance)
-	TSubclassOf<UEnvQueryContext> VectorStart;
+	TSubclassOf<UEnvQueryContext> Point1;
+	
+	UPROPERTY(EditDefaultsOnly, Category=Distance)
+	TSubclassOf<UEnvQueryContext> Point2;
 
 	UPROPERTY(EditDefaultsOnly, Category=Distance)
 	FAIDataProviderFloatValue FloatMinDistance;
